@@ -71,8 +71,8 @@ const DEFAULT_FORM_DATA = {
 };
 
 export const AppProvider = ({ children }) => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get("id");
   const [category, setCategory] = useState("Full-Time");
   const [activeField, setActiveField] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -119,13 +119,13 @@ export const AppProvider = ({ children }) => {
   );
 
   //get Letter from for updation
-  useEffect(() => {
-    if (id) {
-      axios.get(`/api/offers/${id}`)
-        .then((res) => setFormData(res.data))
-        .catch((err) => console.error("Error fetching offer:", err));
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     axios.get(`/api/offers/${id}`)
+  //       .then((res) => setFormData(res.data))
+  //       .catch((err) => console.error("Error fetching offer:", err));
+  //   }
+  // }, [id]);
 
 
 

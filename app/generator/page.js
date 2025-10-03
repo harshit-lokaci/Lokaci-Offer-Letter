@@ -1,21 +1,37 @@
-'use client';
+"use client";
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { FaFileAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+
 import { AppContext } from '../context/AppContext';
 import LetterPreview from './components/LetterPreview';
 import SidebarForm from './components/SidebarForm';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import LoadingOverlay from '../components/other/LoadingOverlay';
+import { useSearchParams } from 'next/navigation';
 
 export default function OfferLetterGenerator() {
-  const { previewRef, isLoading } = useContext(AppContext);
+  const { previewRef, isLoading, setFormData } = useContext(AppContext);
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id"); // Safe to use in client component
+
+  // Fetch offer by ID if exists
+  useEffect(() => {
+    if (id) {
+      axios.get(`/api/offers/${id}`)
+        .then(res => setFormData(res.data))
+        .catch(err => console.error("Error fetching offer:", err));
+    }
+  }, [id, setFormData]);
 
   return (
     <>
       <Header />
+
       <motion.div
         className="min-h-screen bg-gray-50 text-black"
         initial={{ opacity: 0, y: 20 }}
@@ -23,6 +39,7 @@ export default function OfferLetterGenerator() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="container mx-auto px-0 md:px-4 py-8">
+          {/* Page Header */}
           <motion.div
             className="text-center mb-8"
             initial={{ opacity: 0, y: -20 }}
@@ -38,27 +55,28 @@ export default function OfferLetterGenerator() {
             </p>
           </motion.div>
 
+          {/* Layout Grid */}
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-3 gap-0 md:gap-6 lg:gap-8 justify-center items-start"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            {/* Sidebar takes 1/3 */}
+            {/* Sidebar */}
             <div className="order-1 lg:col-span-1 max-w-3xl">
               <SidebarForm />
             </div>
 
-            {/* Preview takes 2/3 */}
+            {/* Preview */}
             <div className="order-2 lg:col-span-2 w-full bg-white rounded-lg">
               <LetterPreview previewRef={previewRef} />
             </div>
           </motion.div>
-
         </div>
       </motion.div>
+
       <Footer />
-      <LoadingOverlay isLoading={isLoading}/>
+      <LoadingOverlay isLoading={isLoading} />
     </>
   );
 }
