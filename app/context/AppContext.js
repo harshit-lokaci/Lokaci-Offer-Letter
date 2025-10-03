@@ -66,7 +66,7 @@ const DEFAULT_FORM_DATA = {
   hrEmail: 'hr@lokaci.com',
   hrPhone: '(555) 123-4567',
   hrTiming: 'Monday - Friday, 9:00 AM - 5:00 PM',
-  candidateNameAcceptance: 'ekjds',
+  // candidateNameAcceptance: '',
   acceptanceDate: '___________',
 };
 

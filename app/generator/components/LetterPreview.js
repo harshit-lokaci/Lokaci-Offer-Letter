@@ -178,7 +178,7 @@ const LetterPreviewEditable = ({ previewRef }) => {
       <div className="mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-2">Candidate Acceptance</h2>
         <p>
-          I, <strong>{formData.candidateNameAcceptance || "[Candidate Name]"}</strong>, accept the terms
+          I, <strong>{formData.candidateName || "[Candidate Name]"}</strong>, accept the terms
           and conditions of this employment offer.
         </p>
         <div className="mt-2"><strong>Date:</strong> {editable("acceptanceDate", "[Acceptance Date]", "span")}</div>
