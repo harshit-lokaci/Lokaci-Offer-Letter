@@ -12,7 +12,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const { setIsAuthenticated } = useContext(AuthContext);
+    const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -30,6 +30,7 @@ export default function LoginPage() {
 
             if (res.ok) {
                 setIsAuthenticated(true);
+                setUser(data.user)
                 toast.success("Login successful! Redirecting...");
                 router.push("/"); // no timeout needed
             } else {

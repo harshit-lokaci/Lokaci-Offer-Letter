@@ -1,12 +1,16 @@
+// app/api/auth/logout/route.js
 import { cookies } from "next/headers";
 
-export async function POST(req) {
+export async function POST() {
+    // ✅ Await cookies() first
+    const cookieStore = await cookies();
+
     // Clear the cookie
-    cookies().set({
+    cookieStore.set({
         name: "authToken",
         value: "",
         httpOnly: true,
-        maxAge: 0, // expires immediately
+        maxAge: 0,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
         path: "/",

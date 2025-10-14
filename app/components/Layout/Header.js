@@ -6,12 +6,17 @@ import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { FiLogOut } from "react-icons/fi";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AuthContext } from "@/app/context/AuthContext";
 import Image from "next/image";
+import CreateUserModal from "./AddAccount";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const [showModal, setShowModal] = useState(false);
+  const { user } = useContext(AuthContext);
+
 
   const {
     setIsAuthenticated,
@@ -161,7 +166,7 @@ const Header = () => {
 
 
             {/* Desktop Buttons */}
-            <div className="hidden lg:flex items-center gap-3 w-72 h-12 px-2">
+            <div className="hidden lg:flex items-center gap-3 w-92 h-12 px-2">
               <Link
                 href="/generator"
                 className="flex-1 flex items-center justify-center bg-gradient-to-r from-blue-800 to-blue-900 text-white px-4 py-2 rounded-sm shadow-md hover:shadow-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-200 font-medium h-full"
@@ -182,6 +187,16 @@ const Header = () => {
                   Logout
                 </span>
               </button>
+              {user?.role === "superadmin" && (
+                <button
+                  title="Add New"
+                  onClick={() => setShowModal(true)}
+                  className="group flex items-center justify-center w-12 h-12 cursor-pointer outline-none hover:rotate-90 transition-transform duration-300 text-green-500 hover:text-green-800 active:text-green-600"
+                >
+                  <AiOutlinePlusCircle size={62} className="transition duration-300" />
+                </button>
+              )}
+
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -282,12 +297,33 @@ const Header = () => {
                       Logout
                     </span>
                   </button>
+                  {user?.role === "superadmin" && (
+                    <button
+                      title="Add New"
+                      onClick={() => setShowModal(true)}
+                      className="group flex items-center justify-center w-12 h-12 cursor-pointer outline-none hover:rotate-90 transition-transform duration-300 text-green-500 hover:text-green-800 active:text-green-600"
+                    >
+                      <AiOutlinePlusCircle size={62} className="transition duration-300" />
+                    </button>
+                  )}
                 </div>
               </nav>
             </div>
           </div>
+        
         </div>
       )}
+      {showModal && (
+        <CreateUserModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onSubmit={(data) => {
+            console.log("User data:", data);
+            setShowModal(false);
+          }}
+        />
+      )}
+
     </>
   );
 };
